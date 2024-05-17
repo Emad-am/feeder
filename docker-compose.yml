@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  golang:
+    logging:
+          driver: "json-file"
+          options:
+            max-size: "50m"
+    container_name: dde-connector-golang-container
+    build:
+      context: ./golang
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - "./golang:/app/"
+    ports:
+      - "8080:8080"
+
+  
+  influxdb:
+    logging:
+        driver: "json-file"
+        options:
+          max-size: "50m"
+    container_name: dde-connector-influxdb-container
+    build:
+      context: ./influxdb
+      dockerfile: Dockerfile
+    env_file:
+      - ./influxdb/.env
+    restart: unless-stopped
+    ports:
+      - "44443:8086"
+      - "44441:8083"
+    volumes:
+      - influx:/var/lib/influxdb2
+
+  redis:
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "50m"
+      container_name: dde-connector-redis-container
+      build:
+        context: ./redis
+        dockerfile: Dockerfile
+      restart: unless-stopped
+      ports:
+        - "44442:6379"
+
+volumes:
+  influx:
+    driver: local

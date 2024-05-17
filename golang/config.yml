@@ -1,0 +1,19 @@
+db:
+  host: "influxdb"
+  port: "8086"
+  name: "test"
+  userName: "root"
+  password: "9T5v4pvy£X"
+  authToken: "ploYJ,DN=g5q@KguJYbhhnaM]%D,qn"
+
+redis: 
+  host: "redis"
+  port: "6379"
+  password: "11111111"
+  DB: 0
+
+dde:
+  host: "host.docker.internal"
+  port: "2222"
+  userName: "localhost"
+  password: "localhost"
