@@ -6,6 +6,8 @@ type DBConfig struct {
 	Name      string
 	UserName  string
 	Password  string
+	Org       string
+	Bucket    string
 	AuthToken string
 }
 

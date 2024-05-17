@@ -33,6 +33,8 @@ func GetConfig() *Config {
 			Name:      viper.GetString("db.name"),
 			UserName:  viper.GetString("db.userName"),
 			Password:  viper.GetString("db.password"),
+			Org:       viper.GetString("db.org"),
+			Bucket:    viper.GetString("db.bucket"),
 			AuthToken: viper.GetString("db.authToken"),
 		},
 		Redis: RedisConfig{

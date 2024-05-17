@@ -4,11 +4,13 @@ import (
 	"dde/internal/context"
 	"encoding/json"
 	"fmt"
+
+	"github.com/redis/go-redis/v9"
 )
 
-func Lpush(key string, value interface{}) int64 {
-	ctx := context.GetContext()
+var ctx = context.GetContext()
 
+func Lpush(key string, value interface{}) int64 {
 	v, e := json.Marshal(value)
 	if e != nil {
 		fmt.Println(e)
@@ -23,7 +25,6 @@ func Lpush(key string, value interface{}) int64 {
 }
 
 func Rpop(key string) map[string]string {
-	ctx := context.GetContext()
 	res, err := Rdb.RPop(*ctx, key).Result()
 
 	if err != nil {
@@ -36,4 +37,16 @@ func Rpop(key string) map[string]string {
 	_ = json.Unmarshal([]byte(res), &dat)
 
 	return dat
+}
+
+func Publish(channel string, payload interface{}) {
+	err := Rdb.Publish(*ctx, channel, payload).Err()
+	if err != nil {
+		panic(err)
+	}
+}
+
+func Subscribe(channel string) *redis.PubSub {
+	pubsub := Rdb.Subscribe(*ctx, channel)
+	return pubsub
 }

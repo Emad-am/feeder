@@ -3,13 +3,15 @@ package feederservice
 import (
 	"bufio"
 	"dde/config"
-	"dde/internal/redis"
 	"fmt"
 	"net"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
+
+var syms symbols = NewSymbols()
 
 func Start() {
 	var conf = config.GetConfig()
@@ -95,6 +97,19 @@ func Start() {
 		}
 	}()
 
+	// go func() {
+	// 	pubsub := redis.Subscribe("channel")
+	// 	ctx := context.GetContext()
+	// 	for {
+	// 		msg, err := pubsub.ReceiveMessage(*ctx)
+	// 		if err != nil {
+	// 			panic(err)
+	// 		}
+
+	// 		fmt.Println(msg.Payload)
+	// 	}
+	// }()
+
 	for {
 		res, err := reader.ReadString('\n')
 		if err != nil {
@@ -103,10 +118,34 @@ func Start() {
 		}
 
 		if res != "" {
-			str := trim(res, []string{"\n", "\r"})
-			splitted := strings.Split(str, " ")
-			redis.Lpush(splitted[0], splitted[1]+" "+splitted[2])
-			fmt.Println(res)
+			go func() {
+				str := trim(res, []string{"\n", "\r", "."})
+				splitted := strings.Split(str, " ")
+				tick := tick{
+					Ask:  splitted[1],
+					Bid:  splitted[2],
+					Time: time.Now(),
+				}
+				symbol := syms[splitted[0]]
+
+				symbol = append(symbol, tick)
+			}()
+
+			// redis.Publish("channel", symbol)
+			// fmt.Print(res)
+
+			// bar := barmodel.BarModel{
+			// 	High:   toInt(splitted[1]),
+			// 	Low:    toInt(splitted[1]),
+			// 	Open:   toInt(splitted[1]),
+			// 	Close:  toInt(splitted[1]),
+			// 	Volume: toInt(splitted[1]),
+			// 	Time:   time.Now(),
+			// }
+
+			// point := barmodel.NewBarPoint(splitted[0], time.Now().String(), bar)
+
+			// barmodel.Save(point)
 		}
 	}
 }
@@ -116,4 +155,13 @@ func trim(s string, chars []string) string {
 		s = strings.ReplaceAll(s, chars[i], "")
 	}
 	return s
+}
+
+func toInt(s string) int64 {
+	num, _ := strconv.ParseInt(s, 10, 64)
+	return num
+}
+
+func GetSymbols() *symbols {
+	return &syms
 }

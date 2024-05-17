@@ -4,6 +4,8 @@ db:
   name: "test"
   userName: "root"
   password: "9T5v4pvy£X"
+  org: "chart-org"
+  bucket: "chart-bucket"
   authToken: "ploYJ,DN=g5q@KguJYbhhnaM]%D,qn"
 
 redis: 
