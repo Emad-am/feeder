@@ -2,7 +2,8 @@ package redis
 
 import (
 	"fmt"
-	"dde/config"
+
+	"github.com/Emad-am/feeder/config"
 
 	"github.com/redis/go-redis/v9"
 )

@@ -1,8 +1,9 @@
 package barmodel
 
 import (
-	"dde/internal/db"
 	"time"
+
+	"github.com/Emad-am/feeder/internal/db"
 
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api/write"

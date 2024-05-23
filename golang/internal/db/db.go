@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"dde/config"
+	"github.com/Emad-am/feeder/config"
 
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
