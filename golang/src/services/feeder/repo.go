@@ -1,17 +1,14 @@
 package feederservice
 
 import (
-	"sync"
-
 	"github.com/Emad-am/feeder/config"
 )
 
 var conf = config.GetConfig()
 var syms symbols = *NewSymbols()
-var c = make(chan tick, 1)
-var wg sync.WaitGroup
+var c = make(chan Tick, 100)
 
-type tick struct {
+type Tick struct {
 	Symbol string
 	Ask    int64
 	Bid    int64
@@ -438,10 +435,6 @@ func GetSymbols() *symbols {
 	return &syms
 }
 
-func GetChannel() *chan tick {
+func GetChannel() *chan Tick {
 	return &c
-}
-
-func GetWaitGroup() *sync.WaitGroup {
-	return &wg
 }

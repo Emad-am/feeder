@@ -2,12 +2,13 @@ package feederservice
 
 import (
 	"bufio"
-	"github.com/Emad-am/feeder/tools"
 	"fmt"
 	"net"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/Emad-am/feeder/tools"
 )
 
 var conn net.Conn
@@ -81,9 +82,11 @@ func startReader() {
 	}
 
 	fmt.Printf("Authentication response: %s", authResponse)
-	wg.Add(1)
+	waitChannel := make(chan struct{}, 1)
 	go func() {
-		defer wg.Done()
+		defer func() {
+			waitChannel <- struct{}{}
+		}()
 
 		for {
 			res, err := reader.ReadString('\n')
@@ -97,16 +100,18 @@ func startReader() {
 			}
 			str := tools.Trim(res, []string{"\n", "\r", "."})
 			splitted := strings.Split(str, " ")
-			tick := tick{
+			tick := Tick{
 				Symbol: splitted[0],
 				Ask:    tools.ToInt(splitted[1]),
 				Bid:    tools.ToInt(splitted[2]),
 				Time:   time.Now().UnixMilli(),
 			}
 
-			c <- tick
+			go func(data Tick) {
+				c <- data
+			}(tick)
 		}
 	}()
 
-	wg.Wait()
+	<-waitChannel
 }
