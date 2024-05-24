@@ -51,7 +51,7 @@ Run the application using Docker as described above, or build and run it directl
 
 ### License
 
-This project is licensed under the MIT License. See the LICENSE file for details..
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 ```bash
 This README provides an overview, setup instructions, and usage guidelines for the `feeder` project.
