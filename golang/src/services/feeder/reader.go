@@ -3,7 +3,6 @@ package feederservice
 import (
 	"bufio"
 	"fmt"
-	"net"
 	"os"
 	"strings"
 	"time"
@@ -11,24 +10,12 @@ import (
 	"github.com/Emad-am/feeder/tools"
 )
 
-var conn net.Conn
-
-func startReader() {
-	host := conf.DDE.Host
-	port := conf.DDE.Port
+func (feeder *Feeder) startReader() {
 	user := conf.DDE.UserName
 	password := conf.DDE.Password
 
-	connString := fmt.Sprintf("%s:%s", host, port)
-	var e error
-	conn, e = net.Dial("tcp", connString)
-	if e != nil {
-		fmt.Fprintf(os.Stderr, "Error connecting to server: %v\n", e)
-		return
-	}
-
-	fmt.Printf("Connected to %s\n", connString)
-
+	c := *feeder.C
+	conn := *feeder.Conn
 	reader := bufio.NewReader(conn)
 
 	initialResponse, err := reader.ReadBytes('\n')
@@ -82,11 +69,11 @@ func startReader() {
 	}
 
 	fmt.Printf("Authentication response: %s", authResponse)
-	waitChannel := make(chan struct{}, 1)
+	// waitChannel := make(chan struct{}, 1)
 	go func() {
-		defer func() {
-			waitChannel <- struct{}{}
-		}()
+		// defer func() {
+		// 	waitChannel <- struct{}{}
+		// }()
 
 		for {
 			res, err := reader.ReadString('\n')
@@ -113,5 +100,5 @@ func startReader() {
 		}
 	}()
 
-	<-waitChannel
+	// <-waitChannel
 }

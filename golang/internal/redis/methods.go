@@ -51,3 +51,10 @@ func Subscribe(channel string) *redis.PubSub {
 	pubsub := Rdb.Subscribe(*ctx, channel)
 	return pubsub
 }
+
+func Hset(key string, values ...interface{}) {
+	err := Rdb.HSet(*ctx, key, values...).Err()
+	if err != nil {
+		panic(err)
+	}
+}

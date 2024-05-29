@@ -15,7 +15,7 @@ redis:
   DB: 0
 
 dde:
-  host: "host.docker.internal"
+  host: "host.docker.internal" #host.docker.internal
   port: "2222"
   userName: "localhost"
   password: "localhost"

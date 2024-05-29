@@ -5,8 +5,6 @@ import (
 )
 
 var conf = config.GetConfig()
-var syms symbols = *NewSymbols()
-var c = make(chan Tick, 100)
 
 type Tick struct {
 	Symbol string
@@ -15,7 +13,7 @@ type Tick struct {
 	Time   int64
 }
 
-type quote struct {
+type Quote struct {
 	Ask    int64
 	Bid    int64
 	High   int64
@@ -24,11 +22,11 @@ type quote struct {
 	Time   int64
 }
 
-type symbols map[string]quote
+type symbols map[string]Quote
 
 func NewSymbols() *symbols {
 	return &symbols{
-		"AUDCAD": quote{
+		"AUDCAD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -36,7 +34,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"AUDCHF": quote{
+		"AUDCHF": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -44,7 +42,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"AUDJPY": quote{
+		"AUDJPY": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -52,7 +50,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"AUDNZD": quote{
+		"AUDNZD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -60,7 +58,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"AUDUSD": quote{
+		"AUDUSD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -68,7 +66,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"BCHUSD": quote{
+		"BCHUSD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -76,7 +74,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"BTCEUR": quote{
+		"BTCEUR": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -84,7 +82,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"BTCUSD": quote{
+		"BTCUSD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -92,7 +90,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"CADCHF": quote{
+		"CADCHF": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -100,7 +98,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"CADJPY": quote{
+		"CADJPY": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -108,7 +106,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"CHFJPY": quote{
+		"CHFJPY": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -116,7 +114,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"ETHUSD": quote{
+		"ETHUSD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -124,7 +122,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"EURAUD": quote{
+		"EURAUD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -132,7 +130,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"EURCAD": quote{
+		"EURCAD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -140,7 +138,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"EURCHF": quote{
+		"EURCHF": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -148,7 +146,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"EURGBP": quote{
+		"EURGBP": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -156,7 +154,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"EURJPY": quote{
+		"EURJPY": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -164,7 +162,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"EURNZD": quote{
+		"EURNZD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -172,7 +170,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"EURPLN": quote{
+		"EURPLN": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -180,7 +178,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"EURSEK": quote{
+		"EURSEK": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -188,7 +186,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"EURUSD": quote{
+		"EURUSD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -196,7 +194,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"GBPAUD": quote{
+		"GBPAUD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -204,7 +202,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"GBPCAD": quote{
+		"GBPCAD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -212,7 +210,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"GBPCHF": quote{
+		"GBPCHF": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -220,7 +218,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"GBPJPY": quote{
+		"GBPJPY": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -228,7 +226,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"GBPNZD": quote{
+		"GBPNZD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -236,7 +234,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"GBPUSD": quote{
+		"GBPUSD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -244,7 +242,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"GOLD": quote{
+		"GOLD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -252,7 +250,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"GOLDEURO": quote{
+		"GOLDEURO": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -260,7 +258,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"LTCUSD": quote{
+		"LTCUSD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -268,7 +266,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"NZDCAD": quote{
+		"NZDCAD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -276,7 +274,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"NZDCHF": quote{
+		"NZDCHF": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -284,7 +282,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"NZDJPY": quote{
+		"NZDJPY": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -292,7 +290,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"NZDUSD": quote{
+		"NZDUSD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -300,7 +298,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"Palladium": quote{
+		"Palladium": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -308,7 +306,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"Platinum": quote{
+		"Platinum": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -316,7 +314,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"SILVER": quote{
+		"SILVER": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -324,7 +322,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"SILVEREURO": quote{
+		"SILVEREURO": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -332,7 +330,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"USDCAD": quote{
+		"USDCAD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -340,7 +338,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"USDCHF": quote{
+		"USDCHF": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -348,7 +346,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"USDDKK": quote{
+		"USDDKK": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -356,7 +354,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"USDHKD": quote{
+		"USDHKD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -364,7 +362,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"USDJPY": quote{
+		"USDJPY": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -372,7 +370,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"USDMXN": quote{
+		"USDMXN": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -380,7 +378,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"USDNOK": quote{
+		"USDNOK": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -388,7 +386,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"USDPLN": quote{
+		"USDPLN": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -396,7 +394,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"USDSEK": quote{
+		"USDSEK": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -404,7 +402,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"USDSGD": quote{
+		"USDSGD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -412,7 +410,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"USDZAR": quote{
+		"USDZAR": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -420,7 +418,7 @@ func NewSymbols() *symbols {
 			Volume: 0,
 			Time:   0,
 		},
-		"XRPUSD": quote{
+		"XRPUSD": Quote{
 			Ask:    0,
 			Bid:    0,
 			High:   0,
@@ -431,10 +429,10 @@ func NewSymbols() *symbols {
 	}
 }
 
-func GetSymbols() *symbols {
-	return &syms
-}
+// func GetSymbols() *symbols {
+// 	return &syms
+// }
 
-func GetChannel() *chan Tick {
-	return &c
-}
+// func GetChannel() *chan Tick {
+// 	return &c
+// }
