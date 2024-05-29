@@ -4,12 +4,9 @@ import (
 	"fmt"
 	"net"
 	"os"
-
-	"github.com/Emad-am/feeder/src/services/api"
 )
 
 type Feeder struct {
-	api     *api.Api
 	C       *(chan Tick)
 	Symbols *symbols
 	Conn    *net.Conn
@@ -18,11 +15,9 @@ type Feeder struct {
 func (f *Feeder) Start() {
 	f.startKeepAlive()
 	f.startReader()
-
-	f.api.Start()
 }
 
-func NewFeeder(api *api.Api) *Feeder {
+func NewFeeder() *Feeder {
 	c := make(chan Tick, 100)
 	host := conf.DDE.Host
 	port := conf.DDE.Port
